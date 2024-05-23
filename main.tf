@@ -106,7 +106,7 @@ resource "aws_instance" "python_instance" {
   instance_type               = "t2.micro"
   count                       = 1
   key_name                    = "project"
-  vpc_security_group_ids      = ["${aws_security_group.wordpress_sg.id}"]
+  vpc_security_group_ids      = ["${aws_security_group.python_sg.id}"]
   subnet_id                   = aws_subnet.main.id
   associate_public_ip_address = true
   user_data                   = file("userdata.sh")
