@@ -1,9 +1,8 @@
 #!/bin/bash
-sudo yum update
-sudo yum install python3-pip
 sudo yum install git -y
-sudo git clone https://github.com/dharaniaws/USA-Housing.git
+git clone https://github.com/USA-Housing.git
+cd /
 cd USA-Housing/
-pip install -r requirements.txt
+sudo yum install python3 python3-pip -y
+pip3 install -r requirements.txt
 python3 app.py
-screen -m -d python3 app.py
