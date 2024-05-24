@@ -14,7 +14,7 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "main" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.subnet_cidr
-  availability_zone = "us-west-1a"
+  availability_zone = "us-west-1b"
   tags = {
     Name = "subnet"
   }
@@ -53,8 +53,8 @@ resource "aws_security_group" "USA-Housing_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
-    from_port   = 8000
-    to_port     = 8000
+    from_port   = 7890
+    to_port     = 7890
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
