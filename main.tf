@@ -11,7 +11,7 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "main" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.subnet_cidr
-  availability_zone = "us-west-1b"
+  availability_zone = "us-west-1a"
   tags = {
     Name = "subnet"
   }
@@ -39,7 +39,7 @@ resource "aws_route_table_association" "subnet_assoc" {
   route_table_id = aws_route_table.main.id
 }
 # Creating Security Group
-resource "aws_security_group" "python_sg" {
+resource "aws_security_group" "USA-Housing_sg" {
   vpc_id = aws_vpc.main.id
   # Inbound Rules
   # HTTP access from anywhere
@@ -50,8 +50,8 @@ resource "aws_security_group" "python_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
-    from_port   = 8080
-    to_port     = 8080
+    from_port   = 8000
+    to_port     = 8000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -69,14 +69,6 @@ resource "aws_security_group" "python_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  # SSh access from anywhere
- ingress {
-   from_port   = 7890
-   to_port     = 7890
-   protocol    = "tcp"
-   cidr_blocks = ["0.0.0.0/0"]
- }
- 
   # Outbound Rules
   # Internet access to anywhere
   egress {
@@ -101,20 +93,20 @@ variable "subnet_cidr" {
 }
 
 # Creating EC2 instance
-resource "aws_instance" "python_instance" {
-  ami                         = "ami-0e4fd9059cb6808a4"
+resource "aws_instance" "USA-Housing_instance" {
+  ami                         = "ami-0fed225bf766d950c"
   instance_type               = "t2.micro"
   count                       = 1
   key_name                    = "project"
-  vpc_security_group_ids      = ["${aws_security_group.python_sg.id}"]
+  vpc_security_group_ids      = ["${aws_security_group.USA-Housing_sg.id}"]
   subnet_id                   = aws_subnet.main.id
   associate_public_ip_address = true
   user_data                   = file("userdata.sh")
   tags = {
-    Name = "python_instance"
+    Name = "USA-Housing_Instance"
   }
 }
 
 output "public_ip" {
-  value = aws_instance.python_instance[*].public_ip
+  value = aws_instance.USA-Housing_instance[*].public_ip
 }
