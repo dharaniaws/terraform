@@ -1,7 +1,5 @@
 provider "aws" {
   region     = "us-west-1"
-  access_key = "***** "
-  secret_key = “*****”
 }
 #vpc.tf
 resource "aws_vpc" "main" {
