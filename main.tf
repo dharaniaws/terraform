@@ -100,7 +100,7 @@ resource "aws_instance" "USA-Housing_instance" {
   ami                         = "ami-0647086318eb3b918"
   instance_type               = "t2.micro"
   count                       = 1
-  key_name                    = "project"
+  key_name                    = "keypair"
   vpc_security_group_ids      = ["${aws_security_group.USA-Housing_sg.id}"]
   subnet_id                   = aws_subnet.main.id
   associate_public_ip_address = true
