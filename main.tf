@@ -2,17 +2,17 @@ provider "aws" {
   region     = "us-east-2"
 }
 #vpc.tf
-resource "aws_vpc" "python" {
+resource "aws_vpc" "main" {
   cidr_block       = var.vpc_cidr
   instance_tenancy = "default"
   tags = {
-    Name = "python"
+    Name = "main"
   }
 }
 
 #creating subnet:
 resource "aws_subnet" "main" {
-  vpc_id            = aws_vpc.python.id
+  vpc_id            = aws_vpc.main.id
   cidr_block        = var.subnet_cidr
   availability_zone = "us-east-2a"
   tags = {
@@ -20,16 +20,16 @@ resource "aws_subnet" "main" {
   }
 }
 #creating internet gateway
-resource "aws_internet_gateway" "python" {
-  vpc_id = aws_vpc.python.id
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
 }
 
 #creating Route table
-resource "aws_route_table" "python" {
-  vpc_id = aws_vpc.python.id
+resource "aws_route_table" "main" {
+  vpc_id = aws_vpc.main.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.python.id
+    gateway_id = aws_internet_gateway.main.id
   }
   tags = {
     Name = "Route to internet"
@@ -39,11 +39,11 @@ resource "aws_route_table" "python" {
 #Associating Route table
 resource "aws_route_table_association" "subnet_assoc" {
   subnet_id      = aws_subnet.main.id
-  route_table_id = aws_route_table.python.id
+  route_table_id = aws_route_table.main.id
 }
 # Creating Security Group
 resource "aws_security_group" "USA-Housing_sg" {
-  vpc_id = aws_vpc.python.id
+  vpc_id = aws_vpc.main.id
   # Inbound Rules
   # HTTP access from anywhere
   ingress {
@@ -102,7 +102,7 @@ resource "aws_instance" "USA-Housing_instance" {
   count                       = 1
   key_name                    = "keypair"
   vpc_security_group_ids      = ["${aws_security_group.USA-Housing_sg.id}"]
-  subnet_id                   = aws_subnet.python.id
+  subnet_id                   = aws_subnet.main.id
   associate_public_ip_address = true
   user_data                   = file("userdata.sh")
   tags = {
