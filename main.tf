@@ -2,7 +2,7 @@ provider "aws" {
   region     = "us-east-2"
 }
 #vpc.tf
-resource "aws_vpc" "main" {
+resource "aws_vpc" "python" {
   cidr_block       = var.vpc_cidr
   instance_tenancy = "default"
   tags = {
@@ -12,7 +12,7 @@ resource "aws_vpc" "main" {
 
 #creating subnet:
 resource "aws_subnet" "main" {
-  vpc_id            = aws_vpc.main.id
+  vpc_id            = aws_vpc.python.id
   cidr_block        = var.subnet_cidr
   availability_zone = "us-east-2a"
   tags = {
