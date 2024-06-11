@@ -1,5 +1,5 @@
 provider "aws" {
-  region     = "us-east-2"
+  region     = "us-west-1"
 }
 #vpc.tf
 resource "aws_vpc" "main" {
@@ -14,7 +14,7 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "main" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.subnet_cidr
-  availability_zone = "us-east-2a"
+  availability_zone = "us-west-1a"
   tags = {
     Name = "subnet"
   }
@@ -97,10 +97,10 @@ variable "subnet_cidr" {
 
 # Creating EC2 instance
 resource "aws_instance" "USA-Housing_instance" {
-  ami                         = "ami-0647086318eb3b918"
+  ami                         = "ami-0f66240e199159416"
   instance_type               = "t2.micro"
   count                       = 1
-  key_name                    = "keypair"
+  key_name                    = "project"
   vpc_security_group_ids      = ["${aws_security_group.USA-Housing_sg.id}"]
   subnet_id                   = aws_subnet.main.id
   associate_public_ip_address = true
